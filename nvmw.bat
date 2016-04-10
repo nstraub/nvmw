@@ -123,6 +123,13 @@ if not %NODE_VERSION:~0,1% == v if not %NODE_VERSION:~0,1% == l (
   set NODE_VERSION=v%NODE_VERSION%
 )
 
+set BRANCH=%ARCH%
+
+:: nvmw install >=4.0.0
+if %NODE_VERSION:~1,1% GEQ 4 (
+set BRANCH=win-%ARCH%
+)
+
 if %NODE_TYPE% == iojs (
   set DIST_URL=%%
   if %ARCH% == x32 (
@@ -132,9 +139,11 @@ if %NODE_TYPE% == iojs (
   )
 ) else (
   if %ARCH% == x32 (
-    set NODE_EXE_URL=%NVMW_NODEJS_ORG_MIRROR%/%NODE_VERSION%/node.exe
+    if %BRANCH% == %ARCH% (
+        set NODE_EXE_URL=%NVMW_NODEJS_ORG_MIRROR%/%NODE_VERSION%/node.exe
+    )
   ) else (
-    set NODE_EXE_URL=%NVMW_NODEJS_ORG_MIRROR%/%NODE_VERSION%/x64/node.exe
+    set NODE_EXE_URL=%NVMW_NODEJS_ORG_MIRROR%/%NODE_VERSION%/%BRANCH%/node.exe
   )
 )
 
